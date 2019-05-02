@@ -30,8 +30,7 @@ items = [
     ['torch', 'fire']
 ]
 
-item = {Item(item[0], item[1]) for item in items}
-
+item = [Item(item[0], item[1]) for item in items]
 
 # Link rooms together
 
@@ -43,6 +42,12 @@ room['overlook'].s_to = room['foyer']
 room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
+
+room['outside'].add_item(item)
+room['foyer'].add_item(item)
+room['overlook'].add_item(item)
+room['narrow'].add_item(item)
+room['treasure'].add_item(item)
 
 #
 # Main

@@ -10,4 +10,7 @@ class Description(Name):
         self.description = description
 
     def __str__(self):
-        return f'{self.name} {self.description}'
+        return f'{self.name} {self.description}\n {self.storage}'
+
+    def __repr__(self):
+        return f'Name:{self.name} Description:{self.description}\n'
