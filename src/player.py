@@ -10,3 +10,9 @@ class Player(Name):
 
     def move_player(self, new_room):
         self.current_room = new_room
+
+    def get_item(self, item):
+        self.storage.append(item)
+
+    def drop_item(self, item):
+        self.storage.remove(item)

@@ -10,6 +10,3 @@ class Room(Description):
         self.e_to = None
         self.s_to = None
         self.w_to = None
-
-    def add_item(self, item):
-        self.storage = item

@@ -68,6 +68,7 @@ player = Player('Player 1', room['outside'])
 print(
     'Enter a direction: [n] north, [e] east, [s] south, [w] west, or [q] to quit.\n')
 
+
 directions = ['n', 'e', 's', 'w']
 
 
@@ -83,6 +84,7 @@ def get_room(way, current_room):
 
 
 while True:
+    print(player)
     print(player.current_room)
     # print(player.current_room.description)
 
@@ -90,8 +92,11 @@ while True:
 
     if way in directions:
         new_room = get_room(way, player.current_room)
+        print('Enter name of item to hold.\n')
+        hold_item = input(' -> ')
         if new_room is not None:
             player.move_player(new_room)
+            player.get_item(hold_item)
         else:
             print('Can not move in that direction')
     elif way == 'q':
