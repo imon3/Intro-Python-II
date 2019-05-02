@@ -93,10 +93,22 @@ while True:
     if way in directions:
         new_room = get_room(way, player.current_room)
         print('Enter name of item to hold.\n')
+        hold_item = []
         hold_item = input(' -> ')
         if new_room is not None:
             player.move_player(new_room)
-            player.get_item(hold_item)
+            if len(hold_item) is not 0:
+                player.get_item(hold_item)
+            if len(player.storage) > 0:
+                print('Enter a item if you would like to drop it.\n')
+                print(player.storage)
+                leave_item = []
+                leave_item = input(' -> ')
+                print(leave_item)
+                if len(leave_item) is not 0:
+                    player.drop_item(leave_item[0])
+                else:
+                    continue
         else:
             print('Can not move in that direction')
     elif way == 'q':
