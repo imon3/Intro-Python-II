@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -22,6 +23,15 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
+items = [
+    ['bow', 'long bow'],
+    ['sword', 'short sword'],
+    ['mirror', 'magic mirror'],
+    ['torch', 'fire']
+]
+
+item = {Item(item[0], item[1]) for item in items}
+
 
 # Link rooms together
 
@@ -39,26 +49,48 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
-player = Player('Player1', 'outside')
-print(player)
-# room = Room('outside', room['outside'])
-# print(room)
+player = Player('Player 1', room['outside'])
 # Write a loop that:
 #
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
 #
-
-
-def way(player, room):
-    for r, v in room.items():
-        if r == player.room:
-            print(r, v)
-
-
-way(player, room)
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+print(
+    'Enter a direction: [n] north, [e] east, [s] south, [w] west, or [q] to quit.\n')
+
+directions = ['n', 'e', 's', 'w']
+
+
+def get_room(way, current_room):
+    if way == 'n':
+        return current_room.n_to
+    elif way == 'e':
+        return current_room.e_to
+    elif way == 's':
+        return current_room.s_to
+    elif way == 'w':
+        return current_room.w_to
+
+
+while True:
+    print(player.current_room)
+    # print(player.current_room.description)
+
+    way = input(' -> ')
+
+    if way in directions:
+        new_room = get_room(way, player.current_room)
+        if new_room is not None:
+            player.move_player(new_room)
+        else:
+            print('Can not move in that direction')
+    elif way == 'q':
+        print('Thank you for playing.')
+        break
+    else:
+        print('invalid key')
