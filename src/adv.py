@@ -1,4 +1,6 @@
 from room import Room
+from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -21,6 +23,14 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
+items = [
+    ['bow', 'long bow'],
+    ['sword', 'short sword'],
+    ['mirror', 'magic mirror'],
+    ['torch', 'fire']
+]
+
+item = [Item(item[0], item[1]) for item in items]
 
 # Link rooms together
 
@@ -33,12 +43,18 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+room['outside'].add_item(item)
+room['foyer'].add_item(item)
+room['overlook'].add_item(item)
+room['narrow'].add_item(item)
+room['treasure'].add_item(item)
+
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
-
+player = Player('Player 1', room['outside'])
 # Write a loop that:
 #
 # * Prints the current room name
@@ -49,3 +65,54 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+print(
+    'Enter a direction: [n] north, [e] east, [s] south, [w] west, or [q] to quit.\n')
+
+
+directions = ['n', 'e', 's', 'w']
+
+
+def get_room(way, current_room):
+    if way == 'n':
+        return current_room.n_to
+    elif way == 'e':
+        return current_room.e_to
+    elif way == 's':
+        return current_room.s_to
+    elif way == 'w':
+        return current_room.w_to
+
+
+while True:
+    print(player)
+    print(player.current_room)
+    # print(player.current_room.description)
+
+    way = input(' -> ')
+
+    if way in directions:
+        new_room = get_room(way, player.current_room)
+        print('Enter name of item to hold.\n')
+        hold_item = []
+        hold_item = input(' -> ')
+        if new_room is not None:
+            player.move_player(new_room)
+            if len(hold_item) is not 0:
+                player.get_item(hold_item)
+            if len(player.storage) > 0:
+                print('Enter a item if you would like to drop it.\n')
+                print(player.storage)
+                leave_item = []
+                leave_item = input(' -> ')
+                print(leave_item)
+                if len(leave_item) is not 0:
+                    player.drop_item(leave_item[0])
+                else:
+                    continue
+        else:
+            print('Can not move in that direction')
+    elif way == 'q':
+        print('Thank you for playing.')
+        break
+    else:
+        print('invalid key')
